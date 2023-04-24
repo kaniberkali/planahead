@@ -1,10 +1,12 @@
-import React from 'react'
-import Menu from './menu'
 import './sideMenu.css'
+import { useContext } from 'react'
+import Menu from './menu'
 import { useState } from 'react'
+import { Context } from '../../Context/context'
 
 function SideMenu() {
   const [stateMenu,setStateMenu] = useState(false);
+  const {setStateModal} = useContext(Context);
   const openMenu = () => {
     setStateMenu(true);
   }
@@ -16,7 +18,7 @@ function SideMenu() {
       <div className={`${!stateMenu ? 'hidden' : ''}`}>
         <h3 style={{fontWeight:'inherit'}}>Expert To-Do</h3>
           <div id='profile'>
-            <div id='profile-img'>
+            <div className='profile-img'>
             </div>
             <div id='profile-details'>
               <span>John Doe</span>
@@ -25,7 +27,8 @@ function SideMenu() {
           </div>
           <Menu/>
           <div id='logout'>
-            <span>Logout</span>
+            <span onClick={() => setStateModal(true)}>Settings</span>
+            <span style={{marginTop : '10px'}}>Logout</span>
           </div>
       </div>
     </div>
