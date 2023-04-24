@@ -1,0 +1,42 @@
+.note{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 250px;
+    height: 250px;
+    background-color: #2C3333;
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.time{
+    color: aliceblue;
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: 5px;
+}
+
+.note-title{
+    text-align: center;
+    margin-top: 20px;
+    color: aliceblue;
+    font-size: 20px;
+    font-weight: 200;
+}
+
+.note a{
+    margin-top: 20px;
+    color: aliceblue;
+    transition: ease-in .3s;
+}
+.note a:hover{
+    color: rgb(172, 197, 219);
+    transform: scale(1.2);
+}
+
+@media only screen and (max-width: 1350px) {
+    .note{
+        width: 200px;
+    }
+  }
