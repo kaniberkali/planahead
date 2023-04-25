@@ -5,7 +5,6 @@ import SearchBar from '../Components/SearchBar/SearchBar'
 import './pages.css'
 
 function Home() {
-
   return (
     <div id='home-page'>
         <SideMenu/>
