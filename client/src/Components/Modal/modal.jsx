@@ -8,7 +8,6 @@ function modal(props) {
             {props.child}
         </div>
     </div>
-  )
-}
+    );}
 
 export default modal

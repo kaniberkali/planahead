@@ -4,19 +4,20 @@
     width: 230px;
     height: 100%;
     background: #fff;
+    overflow-x: hidden;
     overflow-y: auto;
     transition: all .4s;
     z-index: 99;
 }
 
 .closed-menu{
-    background: #2C3333 !important;
+    background: var(--bgColor) !important;
     transform: translateX(-180px);
     z-index: 1;
 }
 
 .hidden{
-    display: none;
+    display: none !important;
 }
 
 #profile{
@@ -66,7 +67,7 @@
 }
 
 #menu ul li:hover{
-    background-color: #2C3333;
+    background-color: var(--bgColor);
     color: #fff;
 }
 
@@ -78,5 +79,6 @@
     height: 50px;
     font-weight: 300;
     padding: 15px;
+    margin-bottom: 30px;
     cursor: pointer;
 }
