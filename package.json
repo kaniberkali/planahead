@@ -2,12 +2,12 @@
   "name": "planahead",
   "version": "1.0.0",
   "scripts": {
-    "client": "cd client && npm start",
-    "server": "cd server && npm start",
-    "start": "concurrently \"npm install\" \"npm run server\" \"npm run client\"",
+    "client": "cd client && start cmd.exe @cmd /k \"echo Client successfully run & npm start\"",
+    "server": "cd server && start cmd.exe @cmd /k \"echo Server successfully run & npm start\"",
+    "start": "npm install && npm run client && npm run server",
     "client_dev": "cd client && start cmd.exe @cmd /k \"echo Client successfully run & npm run dev\"",
     "server_dev": "cd server &&  start cmd.exe @cmd /k \"echo Server successfully run & npm run dev\"",
-    "dev": "concurrently \"npm install\" \"npm run client_dev\" \"npm run server_dev\""
+    "dev": "npm install && npm run client_dev && npm run server_dev"
   },
   "devDependencies": {
     "concurrently": "^8.0.1"
