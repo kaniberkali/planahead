@@ -33,7 +33,7 @@ function register() {
                     <Field className='authInput' type='password' id='password' name = 'password'/>
                 </div>
 
-                <button className='btn btn-submit' type="submit">Submit</button>
+                <button className='btn btn-primary' type="submit">Submit</button>
             </Form>
 
         </Formik>

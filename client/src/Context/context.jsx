@@ -3,11 +3,17 @@ import { createContext, useState} from "react";
 const Context = createContext();
 
 const ContextProvider = ({children}) => {
-    const [stateModal, setStateModal] = useState(false);
+    const [stateSettings, setStateSettings] = useState(false);
+    const [bgColor, setBgColor] = useState('#57C5B6');
+    const [newNote,setNewNote] = useState(false);
 
     const values = {
-        stateModal,
-        setStateModal
+        stateSettings,
+        bgColor,
+        newNote,
+        setStateSettings,
+        setBgColor,
+        setNewNote
     };
 
     return<Context.Provider value={values}>{children}</Context.Provider>

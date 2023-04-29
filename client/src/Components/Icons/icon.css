@@ -1,0 +1,10 @@
+.icon{
+    margin: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.icon:hover{
+    background-color: var(--bgColor);
+    color: white;
+}
