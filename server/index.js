@@ -3,7 +3,8 @@ const bodyParser = require('body-parser')
 const app = express()
 const pretty = require('express-prettify')
 const { User} = require('./db.js')
-const {register, login} = require("./func.js")
+const {register, login, validateRequestBody} = require("./func.js")
+const { userRegisterSchema } = require("./validation.js")
 const router = express.Router()
 const session = require('express-session');
 
@@ -19,7 +20,7 @@ app.use(session({
    saveUninitialized: true
 }))
 
-router.post("/register", async (req,res) => {
+router.post("/register", validateRequestBody(userRegisterSchema),async (req,res) => {
    const isRegister = await register(req.body)
    if (isRegister)
       req.session.user = { username: req.body.username, password: req.body.password };
