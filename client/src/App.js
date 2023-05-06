@@ -11,8 +11,8 @@ function App() {
     <ContextProvider>
       <div className="App">
         <Background/>
-        {/* <Login/> */}
-        <Register/>
+        <Login/>
+        {/* <Register/> */}
         {/* <Home/> */}
       </div>
     </ContextProvider>

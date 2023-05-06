@@ -1,7 +1,7 @@
 import React from 'react'
 import {Formik,Field,Form} from 'formik';
-import * as Yup from 'yup';
 import { userLoginSchema } from '../Validation/validation';
+import axios from 'axios';
 import './pages.css'
 
 function login() {
@@ -10,22 +10,27 @@ function login() {
         <h3 className='title'>Expert To-Do</h3>
         <span style={{fontSize:"24px",fontWeight:"400"}}>Login</span>
         <Formik initialValues={{
-            username: '',
+            email: '',
             password: '',
         }}
         validationSchema={userLoginSchema}
-        onSubmit={async (values) => {
-            await new Promise((r) => setTimeout(r,500));
-            alert(JSON.stringify(values,null,2));
+        onSubmit={(values) => {
+            axios.post(`${process.env.REACT_APP_API_URL}/login/`,values)
+              .then(function (response) {
+                console.log(response);
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
         }}
         >
             {({errors,touched}) => (
                 <Form className='authForm'>
                     <div>
-                        <label style={{fontSize:'14px'}} htmlFor='username'>Username</label><br></br>
-                        <Field className='authInput' type='text' id='username' name = 'username'/>
-                        {errors.username && touched.username ? (
-                            <div className='text-danger sm'><small>{errors.username}</small></div>
+                        <label style={{fontSize:'14px'}} htmlFor='email'>Email</label><br></br>
+                        <Field className='authInput' type='text' id='email' name = 'email'/>
+                        {errors.email && touched.email ? (
+                            <div className='text-danger sm'><small>{errors.email}</small></div>
                         ):null}
                     </div>
 

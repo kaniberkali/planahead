@@ -16,7 +16,7 @@ function register() {
             password: '',
         }}
         validationSchema={userRegisterSchema}
-        onSubmit={async (values) => {
+        onSubmit={(values) => {
             axios.post(`${process.env.REACT_APP_API_URL}/register/`,values)
               .then(function (response) {
                 console.log(response);
