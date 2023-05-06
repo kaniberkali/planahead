@@ -7,12 +7,17 @@ const {register, login, validateRequestBody} = require("./func.js")
 const { userRegisterSchema } = require("./validation.js")
 const router = express.Router()
 const session = require('express-session');
-
+require('dotenv').config()
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json());
 app.use(pretty({ always: true }))
-require('dotenv').config()
 app.use('/api', router);
+const cors = require('cors');
+
+app.use(cors({
+   origin: process.env.FRONTEND_URL,
+   optionsSuccessStatus: 200
+}))
 
 app.use(session({
    secret: process.env.SESSION_SECRET,
