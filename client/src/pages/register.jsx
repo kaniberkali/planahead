@@ -1,15 +1,9 @@
 import React from 'react'
 import {Formik,Field,Form} from 'formik';
-import * as Yup from 'yup';
 import './pages.css'
+import { userRegisterSchema } from '../Validation/validation';
 
 function register() {
-    const registerUser = Yup.object().shape({
-        username:Yup.string().required('Bu alan zorunludur').matches(/^[aA-zZ\s]+$/, "Yanlızca alfabetik karakter kullanılabilir."),
-        password:Yup.string().required('Bu alan zorunludur').min(8, 'Şifre en az 8 karakterli olabilir.')
-        .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
-        email:Yup.string().email().required('Bu alan zorunludur'),
-    })
   return (
     <div className='auth-container'>
         <h3 className='title'>Expert To-Do</h3>
@@ -19,7 +13,7 @@ function register() {
             password: '',
             email: '',
         }}
-        validationSchema={registerUser}
+        validationSchema={userRegisterSchema}
         onSubmit={async (values) => {
             await new Promise((r) => setTimeout(r,500));
             alert(JSON.stringify(values,null,2));
