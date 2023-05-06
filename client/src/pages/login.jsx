@@ -1,5 +1,6 @@
 import React from 'react'
 import {Formik,Field,Form} from 'formik';
+import * as Yup from 'yup';
 import './pages.css'
 
 function login() {
