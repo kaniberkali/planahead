@@ -13,6 +13,8 @@
     "concurrently": "^8.0.1"
   },
   "dependencies": {
+    "axios": "^1.4.0",
+    "dotenv": "^16.0.3",
     "moment": "^2.29.4",
     "mysql2": "^3.2.4",
     "sequelize": "^6.31.0",

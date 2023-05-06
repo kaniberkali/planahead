@@ -38,7 +38,7 @@
 
 .authForm{
     width: 100%;
-    margin-top: 60px;
+    margin-top: 10px;
     gap: 40px;
     display: flex;
     flex-direction: column;
@@ -47,7 +47,6 @@
 
 .authInput{
     width: 300px;
-    padding: 10px;
     border: none;
     outline: none;
     border-bottom: 1px solid #000;

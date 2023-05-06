@@ -2,6 +2,7 @@ import React from 'react'
 import {Formik,Field,Form} from 'formik';
 import './pages.css'
 import { userRegisterSchema } from '../Validation/validation';
+import axios from 'axios';
 
 function register() {
   return (
@@ -9,23 +10,36 @@ function register() {
         <h3 className='title'>Expert To-Do</h3>
         <span style={{fontSize:"24px",fontWeight:"400"}}>Register</span>
         <Formik initialValues={{
-            username: '',
+            name: '',
+            surname: '',
+            email:'',
             password: '',
-            email: '',
         }}
         validationSchema={userRegisterSchema}
         onSubmit={async (values) => {
-            await new Promise((r) => setTimeout(r,500));
-            alert(JSON.stringify(values,null,2));
+            axios.post(`${process.env.REACT_APP_API_URL}/register/`,values)
+              .then(function (response) {
+                console.log(response);
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
         }}
         >
             {({errors,touched}) => (
                 <Form className='authForm'>
                     <div>
-                        <label style={{fontSize:'14px'}} htmlFor='username'>Username</label><br></br>
-                        <Field className='authInput' type='text' id='username' name = 'username'/>
-                        {errors.username && touched.username ? (
-                            <div className='text-danger sm'><small>{errors.username}</small></div>
+                        <label style={{fontSize:'14px'}} htmlFor='name'>Name</label><br></br>
+                        <Field className='authInput' type='text' id='name' name = 'name'/>
+                        {errors.name && touched.name ? (
+                            <div className='text-danger sm'><small>{errors.name}</small></div>
+                        ):null}
+                    </div>
+                    <div>
+                        <label style={{fontSize:'14px'}} htmlFor='surname'>Surname</label><br></br>
+                        <Field className='authInput' type='text' id='surname' name = 'surname'/>
+                        {errors.surname && touched.surname ? (
+                            <div className='text-danger sm'><small>{errors.surname}</small></div>
                         ):null}
                     </div>
 
