@@ -10,7 +10,6 @@ const session = require('express-session');
 require('dotenv').config()
 const cors = require('cors');
 
-
 app.use(cors({
    origin: process.env.FRONTEND_URL
 }))
@@ -22,10 +21,10 @@ app.use('/api', router);
 app.use(session({
    secret: process.env.SESSION_SECRET,
    resave: false,
-   saveUninitialized: true
+   saveUninitialized: false
 }))
 
-router.post("/register",async (req,res) => {
+router.post("/register", validateRequestBody(userRegisterSchema) ,async (req,res) => {
    const isRegister = await register(req.body)
    if (isRegister && req.session)
       req.session.user = { email: req.body.email, password: req.body.password };
