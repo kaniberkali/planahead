@@ -1,34 +1,45 @@
 const express = require('express');
 const { Sequelize, Model, DataTypes } = require('sequelize');
-
+const mysql = require("mysql2")
 require('dotenv').config()
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+
+const pool = mysql.createPool({
     host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT),
-    dialect: 'mysql',
-    pool: {
-        max: parseInt(process.env.DB_MAX),
-        min: parseInt(process.env.DB_MIN),
-        acquire: parseInt(process.env.DB_ACQUIRE),
-        idle: parseInt(process.env.DB_IDLE)
-    }
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    connectionLimit:  parseInt(process.env.DB_CONNECTION_LIMIT)
 })
 
-const User = sequelize.define('user', {
-    name: DataTypes.STRING,
-    surname: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    photo: DataTypes.STRING,
-    createdAt: {
-        type: DataTypes.DATE,
-        defaultValue: Sequelize.NOW
-    },
-    updatedAt: {
-        type: DataTypes.DATE,
-        defaultValue: Sequelize.NOW
-    }
-})
+const p2a = async function (query, debug = false) {
+    if (debug)
+        console.log(query)
+    return new Promise((resolve, reject) => {
+        pool.query(query, function (error, results, fields) {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
 
-sequelize.sync({ force: false })
-module.exports = { User }
+const a2s_i = function (table, data) {
+    let result = `INSERT INTO ${table} SET`
+    Object.keys(data).forEach(function(key) {
+        result += " `" + key + "` = " + data[key] + ","
+    })
+    return result.slice(0, -1)
+}
+
+const a2s_u = function(table, data, id_field, id_value)
+{
+    let result = `UPDATE ${table} SET`
+    Object.keys(data).forEach(function(key) {
+        result += " `" + key + "` = " + data[key] + ","
+    })
+    return result.slice(0, -1) + ` WHERE ${id_field}=${id_value}`
+}
+
+module.exports = { p2a, a2s_i, a2s_u }

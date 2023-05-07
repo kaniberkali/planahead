@@ -1,26 +1,13 @@
 const express = require('express');
-const { Sequelize, Model, DataTypes } = require('sequelize');
-const { User} = require('./db.js');
-const getAllUsers = async () => {
-    return await User.findAll()
-}
+const { pool } = require('./db.js');
+const {p2a, a2s_i, a2s_u} = require("./db");
 
 const register = async (data) => {
-    return await User.create({
-        name: data.name,
-        surname: data.surname,
-        email: data.email,
-        password: data.password
-    })
+    return p2a(a2s_i(data))
 }
 
 const login = async (data) => {
-    return await User.findAll({
-        where: {
-            email: data.email,
-            password: data.password
-        }
-    })
+    return (await p2a(`SELECT * FROM users WHERE email='${data.email}' AND password='${data.password}'`))
 }
 const validateRequestBody = (schema) => {
     return async (req, res, next) => {
