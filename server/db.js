@@ -33,4 +33,27 @@ const a2s_u = function(table, data, id_field, id_value)
     return result.slice(0, -1) + ` WHERE ${id_field}=${id_value}`
 }
 
+//Kullanıcılar tablosu yoksa oluşturuyor.
+p2a(`CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) DEFAULT NULL,
+    surname VARCHAR(255) DEFAULT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    photo VARCHAR(255) DEFAULT NULL
+);`)
+
+//Notlar tablosu yoksa oluşturuyor.
+p2a(`CREATE TABLE IF NOT EXISTS notes (
+id INT AUTO_INCREMENT PRIMARY KEY,
+user_id INT NOT NULL DEFAULT 0,
+type VARCHAR(255) DEFAULT NULL,
+icon_id INT NOT NULL DEFAULT 0,
+date DATETIME DEFAULT NULL,
+title VARCHAR(255) DEFAULT NULL,
+content VARCHAR(500) DEFAULT NULL,
+create_date DATETIME DEFAULT NULL,
+state VARCHAR(255) DEFAULT NULL
+);`)
+
 module.exports = { p2a, a2s_i, a2s_u }
