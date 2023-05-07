@@ -19,7 +19,7 @@ function Icons() {
         if(allIcons[index]){
           const iconName = allIcons[index];
           let Icon = FaIcons[iconName];
-          icons.push(<Icon id={index} className = 'icon rounded' key={index}/>)
+          icons.push(<Icon id={index+1} className = 'icon rounded' key={index}/>)
         }
       }
     }

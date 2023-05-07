@@ -1,10 +1,23 @@
 import React from 'react'
 import {Formik,Field,Form} from 'formik';
 import { userLoginSchema } from '../Validation/validation';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import './pages.css'
 
-function login() {
+function Login() {
+    let navigate = useNavigate();
+    axios.get(`${process.env.REACT_APP_API_URL}/session/`,{
+        headers: {
+          'Authorization': `Basic ${Cookies.get('token')}`
+        }})
+    .then(function (response) {
+      navigate('/');
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   return (
     <div className='auth-container'>
         <h3 className='title'>Expert To-Do</h3>
@@ -18,6 +31,8 @@ function login() {
             axios.post(`${process.env.REACT_APP_API_URL}/login/`,values)
               .then(function (response) {
                 console.log(response);
+                Cookies.set('token',response.data.token);
+                navigate('/');
               })
               .catch(function (error) {
                 console.log(error);
@@ -47,9 +62,9 @@ function login() {
             )}
 
         </Formik>
-        <span style={{marginTop:'30px'}}>Don't Have an Account? <a href='#' className='other-auth'>Register</a></span>
+        <span style={{marginTop:'30px'}}>Don't Have an Account? <Link to={'/register'} className='other-auth'>Register</Link></span>
     </div>
   )
 }
 
-export default login
+export default Login

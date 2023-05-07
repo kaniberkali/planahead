@@ -7,6 +7,11 @@ import Home from './pages/Home';
 import {ContextProvider,Context} from './Context/context';
 import { useContext } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+//DevExtremeREACTIVE calendar kullanılacak.
+//Yaklaşan tarihler için bir alan.
+//Planlanmış tarihler olacak.
+//Haftalık componenti yeniden düzenlenecek.
 function App() {
   return (
     <ContextProvider>

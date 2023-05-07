@@ -2,9 +2,21 @@ import React from 'react'
 import {Formik,Field,Form} from 'formik';
 import './pages.css'
 import { userRegisterSchema } from '../Validation/validation';
+import { Link, useNavigate} from 'react-router-dom';
+import Cookies from 'js-cookie';
 import axios from 'axios';
 
-function register() {
+function Register() {
+    let navigate = useNavigate();
+    axios.get(`${process.env.REACT_APP_API_URL}/session/`,{
+        headers: {
+          'Authorization': `Basic ${Cookies.get('token')}`
+        }})
+    .then(function (response) {
+      navigate('/');
+    })
+    .catch(function (error) {
+    });
   return (
     <div className='auth-container'>
         <h3 className='title'>Expert To-Do</h3>
@@ -19,7 +31,8 @@ function register() {
         onSubmit={(values) => {
             axios.post(`${process.env.REACT_APP_API_URL}/register/`,values)
               .then(function (response) {
-                console.log(response);
+                Cookies.set('token',response.data.token);
+                navigate('/login');
               })
               .catch(function (error) {
                 console.log(error);
@@ -62,11 +75,10 @@ function register() {
                     <button className='btn btn-primary' type="submit">Submit</button>
                 </Form>
             )}
-
         </Formik>
-        <span style={{marginTop:'20px'}}>Do Have an Account? <a href='#' className='other-auth'>Login</a></span>
+        <span style={{marginTop:'20px'}}>Do Have an Account? <Link to='/login' className='other-auth'>Login</Link></span>
     </div>
   )
 }
 
-export default register
+export default Register
