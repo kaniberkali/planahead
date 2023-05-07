@@ -3,12 +3,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useContext } from 'react'
 import { useState } from 'react'
 import { Context } from '../../Context/context'
+import { useNavigate } from 'react-router';
 import {MdToday,MdViewTimeline,MdCalendarMonth} from 'react-icons/md';
 import {RiCalendarFill,RiArchiveFill} from 'react-icons/ri';
 import {GiChaingun} from 'react-icons/gi';
 import Menu from './menu';
+import Cookies from 'js-cookie';
 
 function SideMenu() {
+  let navigate = useNavigate();
   const [stateMenu,setStateMenu] = useState(false);
   const {setStateSettings,bgColor,setBgColor} = useContext(Context);
   const openMenu = () => {
@@ -16,6 +19,10 @@ function SideMenu() {
   }
   const closeMenu = () => {
     setStateMenu(false);
+  }
+  const logOut = () => {
+    Cookies.remove('token');
+    navigate('/login');
   }
   return (
     <div id='sideMenu' style={{"--bgColor":bgColor}} onMouseEnter={openMenu} onMouseLeave={closeMenu} className={`${!stateMenu ? 'closed-menu' : ''}`}>
@@ -40,7 +47,7 @@ function SideMenu() {
           <Menu/>
           <div id='logout'>
             <span onClick={() => setStateSettings(true)}>Ayarlar</span>
-            <span style={{marginTop : '10px'}}>Çıkış</span>
+            <span style={{marginTop : '10px'}} onClick={logOut}>Çıkış</span>
           </div>
       </div>
     </div>
