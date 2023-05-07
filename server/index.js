@@ -3,13 +3,13 @@ const bodyParser = require('body-parser')
 const app = express()
 const pretty = require('express-prettify')
 const { User} = require('./db.js')
-const {register, login, validateRequestBody, getUserByEmail} = require("./func.js")
+const {register, login, validateRequestBody, getUserByEmail, getNotes, getNote, addNote} = require("./func.js")
 const router = express.Router()
 require('dotenv').config()
 const cors = require('cors')
 const jwt = require('jsonwebtoken');
 const config= require("./config.js")
-const {userLoginSchema, userRegisterSchema} = require("./validation");
+const {userLoginSchema, userRegisterSchema, noteSchema} = require("./validation");
 
 app.use(cors({
    origin: process.env.FRONTEND_URL
@@ -43,7 +43,6 @@ router.post("/register",validateRequestBody(userRegisterSchema), async (req,res)
 
 router.post("/login", validateRequestBody(userLoginSchema),async (req, res) => {
    const isLogin = await login(req.body)
-   console.log(isLogin)
    if (isLogin)
    {
       const token = jwt.sign({"login":isLogin}, config.jwt_secret);
@@ -54,6 +53,18 @@ router.post("/login", validateRequestBody(userLoginSchema),async (req, res) => {
 })
 router.get("/session", authenticateToken, async (req,res) => {
    res.json({"login":req.user})
+})
+
+router.post("/:user_id/notes", authenticateToken, async (req, res) => {
+   req.body.create_date=new Date().toLocaleString()
+   res.send(await addNote(req.body))
+})
+router.get("/:user_id/notes", authenticateToken, async (req, res) => {
+   res.send(await getNotes(req.params))
+})
+
+router.get("/:user_id/notes/:id", authenticateToken, async (req, res) => {res.send(await getNote(req.params))
+   res.send(await getNote(req.params))
 })
 app.listen(process.env.PORT, () => {
    console.log(`App listening at http://localhost:${process.env.PORT}`)

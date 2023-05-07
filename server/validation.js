@@ -12,4 +12,15 @@ const userLoginSchema = Yup.object().shape({
     password:Yup.string().required('Bu alan zorunludur').min(5, 'Şifre en az 5 karakterli olabilir.')
 });
 
-module.exports = {userRegisterSchema, userLoginSchema }
+const noteSchema = Yup.object().shape({
+    user_id:Yup.number().required(),
+    type:Yup.string().required(),
+    icon_id:Yup.number().required(),
+    date:Yup.string().required(),
+    title:Yup.string().required(),
+    content:Yup.string(),
+    create_date:Yup.string(),
+    state:Yup.string()
+})
+
+module.exports = {userRegisterSchema, userLoginSchema, noteSchema }
