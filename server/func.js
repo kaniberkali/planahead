@@ -1,9 +1,11 @@
-const express = require('express');
-const { pool } = require('./db.js');
-const {p2a, a2s_i, a2s_u} = require("./db");
+const {p2a, a2s_i, a2s_u} = require("./db.js")
+
+const getUserByEmail = async(email) => {
+    return (await p2a(`SELECT * FROM users WHERE email='${email}'`))
+}
 
 const register = async (data) => {
-    return p2a(a2s_i(data))
+    return (await p2a(a2s_i("users", data)))
 }
 
 const login = async (data) => {
@@ -20,4 +22,4 @@ const validateRequestBody = (schema) => {
     };
 };
 
-module.exports = { register, login, validateRequestBody }
+module.exports = { register, login, validateRequestBody, getUserByEmail }

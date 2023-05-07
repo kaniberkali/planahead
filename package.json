@@ -16,6 +16,7 @@
     "axios": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
+    "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
     "mysql2": "^3.2.4",
     "sequelize": "^6.31.0",

@@ -8,4 +8,4 @@ const userRegisterSchema = Yup.object().shape({
     email:Yup.string().email('Lütfen bir email adresi girin...').required('Bu alan zorunludur'),
 });
 
-module.export = { userRegisterSchema }
+module.exports = {userRegisterSchema }
