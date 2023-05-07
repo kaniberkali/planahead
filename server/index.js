@@ -4,12 +4,12 @@ const app = express()
 const pretty = require('express-prettify')
 const { User} = require('./db.js')
 const {register, login, validateRequestBody, getUserByEmail} = require("./func.js")
-const { userRegisterSchema } = require("./validation.js")
 const router = express.Router()
 require('dotenv').config()
 const cors = require('cors')
 const jwt = require('jsonwebtoken');
 const config= require("./config.js")
+const {userLoginSchema, userRegisterSchema} = require("./validation");
 
 app.use(cors({
    origin: process.env.FRONTEND_URL
@@ -41,9 +41,9 @@ router.post("/register",validateRequestBody(userRegisterSchema), async (req,res)
    res.send({token})
 })
 
-router.post("/login", async (req, res) => {
+router.post("/login", validateRequestBody(userLoginSchema),async (req, res) => {
    const isLogin = await login(req.body)
-   if (isLogin.id)
+   if (isLogin[0].id)
    {
       const token = jwt.sign({id: isLogin.id}, config.jwt_secret);
       res.send({token})
