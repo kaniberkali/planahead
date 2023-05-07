@@ -34,25 +34,26 @@ function authenticateToken(req, res, next) {
 }
 
 router.post("/register",validateRequestBody(userRegisterSchema), async (req,res) => {
-   if ((await getUserByEmail(req.body.email)).length)
+   if ((await getUserByEmail(req.body.email)))
       return res.status(409).json({ message: 'Eposta adresi zaten alınmış' });
-   const isRegister = await register(req.body)
-   const token = jwt.sign({ id: isRegister.insertId }, config.jwt_secret)
+   await register(req.body)
+   const token = jwt.sign({ "login":(await getUserByEmail(req.body.email)) }, config.jwt_secret)
    res.send({token})
 })
 
 router.post("/login", validateRequestBody(userLoginSchema),async (req, res) => {
    const isLogin = await login(req.body)
-   if (isLogin[0] !== undefined && isLogin[0].id)
+   console.log(isLogin)
+   if (isLogin)
    {
-      const token = jwt.sign({id: isLogin.id}, config.jwt_secret);
+      const token = jwt.sign({"login":isLogin}, config.jwt_secret);
       res.send({token})
    }
    else
       res.status(401).json({ message: 'Yanlış eposta adresi veya şifre' });
 })
 router.get("/session", authenticateToken, async (req,res) => {
-   res.json(req.user)
+   res.json({"login":req.user})
 })
 app.listen(process.env.PORT, () => {
    console.log(`App listening at http://localhost:${process.env.PORT}`)
