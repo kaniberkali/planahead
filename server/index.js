@@ -43,7 +43,7 @@ router.post("/register",validateRequestBody(userRegisterSchema), async (req,res)
 
 router.post("/login", validateRequestBody(userLoginSchema),async (req, res) => {
    const isLogin = await login(req.body)
-   if (isLogin[0].id)
+   if (isLogin[0] !== undefined && isLogin[0].id)
    {
       const token = jwt.sign({id: isLogin.id}, config.jwt_secret);
       res.send({token})
