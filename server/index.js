@@ -55,16 +55,16 @@ router.get("/session", authenticateToken, async (req,res) => {
    res.json({"login":req.user})
 })
 
-router.post("/:user_id/notes", authenticateToken, async (req, res) => {
+router.post("/notes", authenticateToken, async (req, res) => {
    req.body.create_date=new Date().toLocaleString()
-   res.send(await addNote(req.body))
+   res.send(await addNote(req))
 })
-router.get("/:user_id/notes", authenticateToken, async (req, res) => {
-   res.send(await getNotes(req.params))
+router.get("/notes", authenticateToken, async (req, res) => {
+   res.send(await getNotes(req))
 })
 
-router.get("/:user_id/notes/:id", authenticateToken, async (req, res) => {res.send(await getNote(req.params))
-   res.send(await getNote(req.params))
+router.get("/notes/:id", authenticateToken, async (req, res) => {res.send(await getNote(req.params))
+   res.send(await getNote(req))
 })
 app.listen(process.env.PORT, () => {
    console.log(`App listening at http://localhost:${process.env.PORT}`)

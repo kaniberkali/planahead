@@ -15,19 +15,35 @@ const login = async (data) => {
     return result[0] !== undefined ? result[0] : false
 }
 
-const addNote = async (data) => {
-    const result = (await p2a(a2s_i("notes", data)))
-    return result !== undefined ? result : false
+const addNote = async (req) => {
+    if (req.user.id)
+    {
+        req.body.user_id = req.user.id;
+        const result = (await p2a(a2s_i("notes", req.body)))
+        return result !== undefined ? result : false
+    }
+    else
+        return false
 }
 
-const getNotes = async (data) => {
-    const result = (await p2a(`SELECT * FROM notes WHERE user_id='${data.user_id}'`))
-    return result[0] !== undefined ? result : false
+const getNotes = async (req) => {
+    if (req.user.id)
+    {
+        const result = (await p2a(`SELECT * FROM notes WHERE user_id='${req.user.id}'`))
+        return result[0] !== undefined ? result : false
+    }
+    else
+        return false
 }
 
-const getNote = async (data) => {
-    const result = (await p2a(`SELECT * FROM notes WHERE user_id='${data.user_id}' AND id=${data.id}`))
-    return result[0] !== undefined ? result[0] : false
+const getNote = async (req) => {
+    if (req.user.id)
+    {
+        const result = (await p2a(`SELECT * FROM notes WHERE user_id='${req.user.id}' AND id=${req.body.id}`))
+        return result[0] !== undefined ? result[0] : false
+    }
+    else
+        return false
 }
 
 const validateRequestBody = (schema) => {
