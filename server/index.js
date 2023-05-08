@@ -3,14 +3,32 @@ const bodyParser = require('body-parser')
 const app = express()
 const pretty = require('express-prettify')
 const { User} = require('./db.js')
-const {register, login, validateRequestBody, getUserByEmail, getNotes, getNote, addNote} = require("./func.js")
+const {register, login, validateRequestBody, getUserByEmail, getNotes, getNote, addNote, deleteNote, editProfile} = require("./func.js")
 const router = express.Router()
 require('dotenv').config()
 const cors = require('cors')
 const jwt = require('jsonwebtoken');
 const config= require("./config.js")
 const {userLoginSchema, userRegisterSchema, noteSchema} = require("./validation");
+const multer = require("multer")
 
+const storage = multer.diskStorage({
+   destination: function (req, file, cb) {
+      cb(null, 'uploads/')
+   },
+   filename: function (req, file, cb) {
+      cb(null, Math.floor(Math.random() * 999999999999) + "." + file.originalname.split('.')[1])
+   }
+});
+
+const fileFilter = function(req, file, cb) {
+   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/gif') {
+      cb(null, true);
+   } else {
+      cb(new Error('Sadece resim dosyaları yüklenebilir!'), false);
+   }
+};
+const upload = multer({ storage: storage, fileFilter: fileFilter });
 app.use(cors({
    origin: process.env.FRONTEND_URL
 }))
@@ -55,16 +73,25 @@ router.get("/session", authenticateToken, async (req,res) => {
    res.json({"login":req.user})
 })
 
+router.post('/edit', authenticateToken, upload.single('image'), async function (req, res) {
+
+   res.send(await editProfile(req))
+});
 router.post("/notes", authenticateToken, async (req, res) => {
    req.body.create_date=new Date().toLocaleString()
    res.send(await addNote(req))
 })
+
 router.get("/notes", authenticateToken, async (req, res) => {
    res.send(await getNotes(req))
 })
 
-router.get("/notes/:id", authenticateToken, async (req, res) => {res.send(await getNote(req.params))
+router.get("/notes/:id", authenticateToken, async (req, res) => {
    res.send(await getNote(req))
+})
+
+router.delete("/notes/:id", authenticateToken, async (req, res) => {
+   res.send(await deleteNote(req))
 })
 app.listen(process.env.PORT, () => {
    console.log(`App listening at http://localhost:${process.env.PORT}`)
