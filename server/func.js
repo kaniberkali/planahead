@@ -29,6 +29,7 @@ const addNote = async (req) => {
     if (req.user !== undefined && req.user.login.id)
     {
         req.body.user_id = req.user.login.id;
+        req.body.icon_id = req.body.icon_id | 0;
         const result = (await p2a(a2s_i("notes", req.body)))
         return result !== undefined ? result : false
     }
