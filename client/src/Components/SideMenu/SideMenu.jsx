@@ -8,12 +8,13 @@ import {MdToday,MdViewTimeline,MdCalendarMonth} from 'react-icons/md';
 import {RiCalendarFill,RiArchiveFill} from 'react-icons/ri';
 import {GiChaingun} from 'react-icons/gi';
 import Menu from './menu';
+import axios from 'axios';
 import Cookies from 'js-cookie';
 
 function SideMenu() {
   let navigate = useNavigate();
   const [stateMenu,setStateMenu] = useState(false);
-  const {setStateSettings,bgColor,setBgColor} = useContext(Context);
+  const {username,setStateSettings,bgColor,menuSelected} = useContext(Context);
   const openMenu = () => {
     setStateMenu(true);
   }
@@ -27,12 +28,11 @@ function SideMenu() {
   return (
     <div id='sideMenu' style={{"--bgColor":bgColor}} onMouseEnter={openMenu} onMouseLeave={closeMenu} className={`${!stateMenu ? 'closed-menu' : ''}`}>
       <div className={`${stateMenu ? 'hidden' : ' '} d-flex flex-column justify-content-center align-items-end`} style={{position : 'relative',width : '100%',height : '100%',display : 'none',transform : 'translateX(4%)'}}>
-        <MdViewTimeline className='text-white text-white' style={{fontSize : '25px'}}/>
-        <MdToday className='text-white mt-5' style={{fontSize : '25px'}}/>
-        <MdCalendarMonth className=' text-white mt-5' style={{fontSize : '25px'}}/>
-        <RiCalendarFill className=' text-white mt-5' style={{fontSize : '25px'}}/>
-        <RiArchiveFill className=' text-white mt-5' style={{fontSize : '25px'}}/>
-        <GiChaingun className=' text-white mt-5' style={{fontSize : '25px'}}/>
+        <MdViewTimeline className={`text-white ${menuSelected == 'routine' ? 'activeMenu': ''}`} style={{fontSize : '25px'}}/>
+        <MdToday className={`text-white mt-5 ${menuSelected == 'week' ? 'activeMenu': ''}`} style={{fontSize : '25px'}}/>
+        <MdCalendarMonth className={`text-white mt-5 ${menuSelected == 'month' ? 'activeMenu': ''}`} style={{fontSize : '25px'}}/>
+        <RiCalendarFill className={`text-white mt-5 ${menuSelected == 'year' ? 'activeMenu': ''}`} style={{fontSize : '25px'}}/>
+        <RiArchiveFill className={`text-white mt-5 ${menuSelected == 'archive' ? 'activeMenu': ''}`} style={{fontSize : '25px'}}/>
       </div>
       <div className={`${!stateMenu ? 'hidden' : ''}`}>
         <h3 style={{fontWeight:'inherit'}}>Plan-Ahead</h3>
@@ -40,8 +40,7 @@ function SideMenu() {
             <div className='profile-img'>
             </div>
             <div id='profile-details'>
-              <span>John Doe</span>
-              <span>22</span>
+              <span>{username}</span>
             </div>
           </div>
           <Menu/>

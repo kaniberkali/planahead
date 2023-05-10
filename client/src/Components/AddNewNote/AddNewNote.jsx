@@ -1,8 +1,11 @@
-import { useContext , useState , useEffect} from 'react'
+import { useContext , useEffect} from 'react'
 import {Formik,Field,Form} from 'formik';
 import * as Yup from 'yup';
 import { Context } from '../../Context/context'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router';
 
 const getCurrentWeek = () => {
     const now = new Date();
@@ -25,7 +28,17 @@ const getCurrentYear = () => {
 }
 
 function AddNewNote() {
-    const {setNewNote, selected, selectIcon, notes, setIconModal, setSelected, setSelectIcon, setNotes} = useContext(Context);
+    const {setNewNote, selected, selectIcon, setIconModal, setSelected, setSelectIcon} = useContext(Context);
+    const navigate = useNavigate();
+    axios.get(`${process.env.REACT_APP_API_URL}/session/`,{
+        headers: {
+          'Authorization': `Basic ${Cookies.get('token')}`
+        }})
+    .then(function (response) {
+    })
+    .catch(function (error) {
+      navigate('/login');
+    });
     const NewNote = Yup.object().shape({
         routine : selected == 'routine' && Yup.string().required('Lütfen bu not için bir saat seçin...'),
         week : selected == 'week' &&  Yup.string().test(
@@ -91,15 +104,24 @@ function AddNewNote() {
         }}
         validationSchema={NewNote}
         onSubmit={async (values) => {
-            setNotes(preValue =>[...preValue,{
-                category : selected,
-                time: values[selected],
-                title: values.title,
-                icon: selectIcon,
-                detail: values.detail}]);
             setSelectIcon('');
             setSelected('routine');
-            setNewNote(false);
+            const data = {
+                type : selected,
+                date: values[selected],
+                title: values.title,
+                icon_id: selectIcon,
+                content: values.detail}
+            axios.post(`${process.env.REACT_APP_API_URL}/notes`,data,{
+                headers: {
+                  'Authorization': `Basic ${Cookies.get('token')}`
+                }})
+            .then(function (response) {
+                setNewNote(false);
+                navigate('/');
+            })
+            .catch(function (error) {
+            });
         }}
         >
             {({values,errors,touched}) => (

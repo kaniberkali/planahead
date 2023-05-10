@@ -19,16 +19,14 @@
 
 .week{
     color: aliceblue;
-    font-size: 20px;
+    font-size: 12px;
     font-weight: 800;
-    letter-spacing: 5px;
 }
 
 .month{
     color: aliceblue;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 800;
-    letter-spacing: 5px;
 }
 
 .year{

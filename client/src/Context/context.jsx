@@ -10,7 +10,8 @@ const ContextProvider = ({children}) => {
     const [iconModal,setIconModal] = useState(false);
     const [selected, setSelected] = useState('routine');
     const [menuSelected, setMenuSelected] = useState('routine');
-    const [selectIcon,setSelectIcon] = useState('');    
+    const [selectIcon,setSelectIcon] = useState(''); 
+    const [username,setUsername] = useState(null);   
     const [notes,setNotes] = useState([]);
 
     const values = {
@@ -23,6 +24,7 @@ const ContextProvider = ({children}) => {
         menuSelected,
         selectIcon,
         notes,
+        username,
         setStateSettings,
         setBgColor,
         setNewNote,
@@ -31,7 +33,8 @@ const ContextProvider = ({children}) => {
         setSelected,
         setMenuSelected,
         setSelectIcon,
-        setNotes
+        setNotes,
+        setUsername
     };
 
     return<Context.Provider value={values}>{children}</Context.Provider>

@@ -59,7 +59,11 @@ date VARCHAR(255) DEFAULT NULL,
 title VARCHAR(255) DEFAULT NULL,
 content VARCHAR(500) DEFAULT NULL,
 create_date VARCHAR(255) DEFAULT NULL,
+<<<<<<< HEAD
+state VARCHAR(255) DEFAULT NULL 
+=======
 state VARCHAR(255) DEFAULT NULL
+>>>>>>> f766b53f0cbf2cc21b2551c54418414fc30f2421
 );`)
 
 module.exports = { p2a, a2s_i, a2s_u }
