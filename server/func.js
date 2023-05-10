@@ -16,9 +16,9 @@ const login = async (data) => {
 }
 
 const addNote = async (req) => {
-    if (req.user.id)
+    if (req.user.login.id)
     {
-        req.body.user_id = req.user.id;
+        req.body.user_id = req.user.login.id;
         const result = (await p2a(a2s_i("notes", req.body)))
         return result !== undefined ? result : false
     }
@@ -27,9 +27,9 @@ const addNote = async (req) => {
 }
 
 const getNotes = async (req) => {
-    if (req.user.id)
+    if (req.user.login.id > 0)
     {
-        const result = (await p2a(`SELECT * FROM notes WHERE user_id='${req.user.id}'`))
+        const result = (await p2a(`SELECT * FROM notes WHERE user_id='${req.user.login.id}'`))
         return result[0] !== undefined ? result : false
     }
     else
@@ -37,9 +37,9 @@ const getNotes = async (req) => {
 }
 
 const getNote = async (req) => {
-    if (req.user.id)
+    if (req.user.login.id)
     {
-        const result = (await p2a(`SELECT * FROM notes WHERE user_id='${req.user.id}' AND id=${req.body.id}`))
+        const result = (await p2a(`SELECT * FROM notes WHERE user_id='${req.user.login.id}' AND id=${req.body.id}`))
         return result[0] !== undefined ? result[0] : false
     }
     else

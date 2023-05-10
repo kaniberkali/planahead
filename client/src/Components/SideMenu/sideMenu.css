@@ -82,3 +82,8 @@
     margin-bottom: 30px;
     cursor: pointer;
 }
+
+.activeMenu{
+    padding-bottom:2px;
+    border-bottom: 3px solid white;
+}
