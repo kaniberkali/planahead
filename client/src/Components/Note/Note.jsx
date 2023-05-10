@@ -4,13 +4,17 @@ import { useContext } from 'react'
 import { Context } from '../../Context/context'
 import * as FaIcons from 'react-icons/fa';
 import { FaCheck } from 'react-icons/fa';
-import {IconContext} from 'react-icons/lib';
+import {MdCancel} from 'react-icons/md';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import moment, { months } from 'moment';
+import axios from 'axios';
+import { useNavigate } from 'react-router';
+import Cookies from 'js-cookie';
 
 function Note(props) {
-  const {bgColor} = useContext(Context);
+  const {bgColor, deleteNote, setDeleteNote} = useContext(Context);
+  const navigate = useNavigate();
   const allIcons = [...Object.keys(FaIcons)];
   let Icon;
   let time;
@@ -33,13 +37,29 @@ function Note(props) {
     const iconName = allIcons[props.icon - 1];
     Icon = FaIcons[iconName];
   }
+  const deleteNoteFunc = () => {
+    axios.delete(`${process.env.REACT_APP_API_URL}/notes/${props.noteId}`,{
+      headers: {
+        'Authorization': `Basic ${Cookies.get('token')}`
+        }})
+        .then(function (response) {
+          setDeleteNote(!deleteNote);
+          navigate('/');
+        })
+        .catch(function (error) {
+          navigate('/login');
+        });
+  }
   return (
     <OverlayTrigger overlay={(prop) => (
       <Tooltip className={'tool-tip'} {...prop}>
         {props.detail != '' && <strong className='p-2'>{props.detail}</strong>}
       </Tooltip>
     )}>
-      <div className='note' style={{background : bgColor}}>
+      <div className='note' style={{background : bgColor}} onClick={deleteNoteFunc}>
+          <div className='delete-note'>
+            <MdCancel/>
+          </div>
           {props.category == 'routine' && <h3 className={props.category}>{props.time}</h3>}
           {props.category == 'week' && <h3 className={props.category}>{time.toLocaleDateString()} - {sevenDays.toLocaleDateString()}</h3>}
           {props.category == 'month' && <h3 className={props.category}>{monthArray[parseInt(time) - 1]} - {year}</h3>}

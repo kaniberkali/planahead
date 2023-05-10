@@ -24,7 +24,7 @@ function NotesArea() {
   return (
     <div id='notesArea'>
       {arr && arr.map((note,index) => (
-        <Note category = {note.type} time = {note.date} title = {note.title} icon={note.icon_id} detail={note.content} key={index}/>
+        <Note noteId={note.id} category = {note.type} time = {note.date} title = {note.title} icon={note.icon_id} detail={note.content} key={index}/>
       ))}
     </div>
   )

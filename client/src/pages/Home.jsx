@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router'
 function Home() {
   let navigate = useNavigate();
   const [redirect,setRedirect] = useState(false);
-  const {bgColor,setNotes, newNote, setUsername} = useContext(Context);
+  const {bgColor,setNotes, newNote, deleteNote, setUsername} = useContext(Context);
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_URL}/session/`,{
       headers: {
@@ -30,12 +30,16 @@ function Home() {
           'Authorization': `Basic ${Cookies.get('token')}`
           }})
         .then(function(response){
-          if(response.data)
+          if(response.data){
             setNotes(response.data);
+          }
+          else{
+            setNotes([]);
+          }
         })
         .catch(function(error){
         });
-  },[newNote]);
+  },[newNote,deleteNote]);
   return (
     <>
       {redirect && <div id='home-page' style={{"--bgColor":bgColor}}>

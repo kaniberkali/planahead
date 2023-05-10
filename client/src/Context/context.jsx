@@ -13,6 +13,7 @@ const ContextProvider = ({children}) => {
     const [selectIcon,setSelectIcon] = useState(''); 
     const [username,setUsername] = useState(null);   
     const [notes,setNotes] = useState([]);
+    const [deleteNote,setDeleteNote] = useState(false);
 
     const values = {
         stateSettings,
@@ -25,6 +26,7 @@ const ContextProvider = ({children}) => {
         selectIcon,
         notes,
         username,
+        deleteNote,
         setStateSettings,
         setBgColor,
         setNewNote,
@@ -34,7 +36,8 @@ const ContextProvider = ({children}) => {
         setMenuSelected,
         setSelectIcon,
         setNotes,
-        setUsername
+        setUsername,
+        setDeleteNote
     };
 
     return<Context.Provider value={values}>{children}</Context.Provider>

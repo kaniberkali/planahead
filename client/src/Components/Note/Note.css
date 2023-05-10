@@ -8,6 +8,7 @@
     border-radius: 20px;
     overflow: hidden;
     padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
 .routine{
@@ -57,6 +58,19 @@
 .note a:hover{
     color: rgb(172, 197, 219);
     transform: scale(1.2);
+}
+
+.delete-note{
+    position: absolute;
+    transform: translate(80px,-18px);
+    color: aliceblue;
+    cursor: pointer;
+    transition: all .3s;
+    font-size: 15px;
+}
+
+.delete-note:hover{
+    color: rgb(236, 108, 108);
 }
 
 .complete-note{
