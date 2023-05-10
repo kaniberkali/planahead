@@ -26,11 +26,7 @@ const editProfile = async (req) => {
 }
 
 const addNote = async (req) => {
-<<<<<<< HEAD
-    if (req.user.login.id)
-=======
     if (req.user !== undefined && req.user.login.id)
->>>>>>> f766b53f0cbf2cc21b2551c54418414fc30f2421
     {
         req.body.user_id = req.user.login.id;
         req.body.icon_id = req.body.icon_id | 0;
@@ -42,11 +38,7 @@ const addNote = async (req) => {
 }
 
 const getNotes = async (req) => {
-<<<<<<< HEAD
-    if (req.user.login.id > 0)
-=======
     if (req.user !== undefined && req.user.login.id)
->>>>>>> f766b53f0cbf2cc21b2551c54418414fc30f2421
     {
         const result = (await p2a(`SELECT * FROM notes WHERE user_id='${req.user.login.id}'`))
         return result[0] !== undefined ? result : false
@@ -56,15 +48,9 @@ const getNotes = async (req) => {
 }
 
 const getNote = async (req) => {
-<<<<<<< HEAD
-    if (req.user.login.id)
-    {
-        const result = (await p2a(`SELECT * FROM notes WHERE user_id='${req.user.login.id}' AND id=${req.body.id}`))
-=======
-    if (req.user !== undefined &&req.user.login.id)
+    if (req.user !== undefined && req.user.login.id)
     {
         const result = (await p2a(`SELECT * FROM notes WHERE user_id='${req.user.login.id}' AND id=${req.params.id}`))
->>>>>>> f766b53f0cbf2cc21b2551c54418414fc30f2421
         return result[0] !== undefined ? result[0] : false
     }
     else
