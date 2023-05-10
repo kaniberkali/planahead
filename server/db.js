@@ -17,12 +17,18 @@ const p2a = async function (query, debug = false) {
 }
 
 const a2s_i = function (table, data) {
-    let result = `INSERT INTO ${table} SET`
+    let result = `INSERT INTO ${table} SET`;
     Object.keys(data).forEach(function(key) {
-        result += " `" + key + "` = '" + data[key] + "',"
-    })
-    return result.slice(0, -1)
-}
+        result += " `" + key + "` = ";
+        if (typeof data[key] === 'number') {
+            result += data[key] + ",";
+        } else {
+            result += "'" + data[key] + "',";
+        }
+    });
+    return result.slice(0, -1);
+};
+
 
 const a2s_u = function(table, data, id_field, id_value)
 {
@@ -40,7 +46,7 @@ p2a(`CREATE TABLE IF NOT EXISTS users (
     surname VARCHAR(255) DEFAULT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    photo VARCHAR(255) DEFAULT NULL
+    photo VARCHAR(255) DEFAULT NULL 
 );`)
 
 //Notlar tablosu yoksa oluşturuyor.
@@ -53,7 +59,11 @@ date VARCHAR(255) DEFAULT NULL,
 title VARCHAR(255) DEFAULT NULL,
 content VARCHAR(500) DEFAULT NULL,
 create_date VARCHAR(255) DEFAULT NULL,
+<<<<<<< HEAD
 state VARCHAR(255) DEFAULT NULL 
+=======
+state VARCHAR(255) DEFAULT NULL
+>>>>>>> f766b53f0cbf2cc21b2551c54418414fc30f2421
 );`)
 
 module.exports = { p2a, a2s_i, a2s_u }
