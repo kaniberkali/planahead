@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const pretty = require('express-prettify')
 const { User} = require('./db.js')
-const {register, login, validateRequestBody, getUserByEmail, getNotes, getNote, addNote, deleteNote, editProfile} = require("./func.js")
+const {register, login, validateRequestBody, getUserByEmail, getNotes, getNote, addNote, deleteNote, editProfile, updateNote, edit} = require("./func.js")
 const router = express.Router()
 require('dotenv').config()
 const cors = require('cors')
@@ -74,8 +74,11 @@ router.get("/session", authenticateToken, async (req,res) => {
 })
 
 router.post('/edit', authenticateToken, upload.single('image'), async function (req, res) {
-
    res.send(await editProfile(req))
+});
+
+router.put('/edit', authenticateToken, async function (req, res) {
+   res.send(await edit(req))
 });
 router.post("/notes", authenticateToken, async (req, res) => {
    req.body.create_date=new Date().toLocaleString()
@@ -92,6 +95,10 @@ router.get("/notes/:id", authenticateToken, async (req, res) => {
 
 router.delete("/notes/:id", authenticateToken, async (req, res) => {
    res.send(await deleteNote(req))
+})
+
+router.put("/notes/:id", authenticateToken, async (req, res) => {
+   res.send(await updateNote(req))
 })
 app.listen(process.env.PORT, () => {
    console.log(`App listening at http://localhost:${process.env.PORT}`)

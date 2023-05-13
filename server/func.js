@@ -16,10 +16,20 @@ const login = async (data) => {
 }
 
 const editProfile = async (req) => {
-    if (req.file) {
+    if (req.user !== undefined && req.user.login.id && req.file) {
         return (await p2a(`UPDATE users
                            SET photo='${req.file.filename}'
                            WHERE id = ${req.user.login.id}`))
+    }
+    else
+        return false
+}
+
+const edit = async (req) => {
+    if (req.user !== undefined && req.user.login.id)
+    {
+        const result = (await p2a(a2s_u("users", req.body, "id", req.user.login.id)))
+        return result.affectedRows > 0
     }
     else
         return false
@@ -67,6 +77,16 @@ const deleteNote = async (req) => {
         return false
 }
 
+const updateNote = async (req) => {
+    if (req.user !== undefined &&req.user.login.id)
+    {
+        const result = (await p2a(a2s_u("notes", req.body, "id", req.params.id)))
+        return result.affectedRows > 0
+    }
+    else
+        return false
+}
+
 const validateRequestBody = (schema) => {
     return async (req, res, next) => {
         try {
@@ -78,4 +98,4 @@ const validateRequestBody = (schema) => {
     };
 };
 
-module.exports = { register, login, validateRequestBody, getUserByEmail, getNote, getNotes, addNote, deleteNote,editProfile }
+module.exports = { register, login, validateRequestBody, getUserByEmail, getNote, getNotes, addNote, deleteNote,editProfile, updateNote, edit }
