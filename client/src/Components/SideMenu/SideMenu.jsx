@@ -28,7 +28,7 @@ function SideMenu() {
   return (
     <div id='sideMenu' style={{"--bgColor":bgColor}} onMouseEnter={openMenu} onMouseLeave={closeMenu} className={`${!stateMenu ? 'closed-menu' : ''}`}>
       <div className={`${stateMenu ? 'hidden' : ' '} d-flex flex-column justify-content-center align-items-end`} style={{position : 'relative',width : '100%',height : '100%',display : 'none',transform : 'translateX(4%)'}}>
-        <MdViewTimeline className={`text-white ${menuSelected == 'routine' ? 'activeMenu': ''}`} style={{fontSize : '25px'}}/>
+        <MdViewTimeline className={`text-white ${menuSelected == 'daily' ? 'activeMenu': ''}`} style={{fontSize : '25px'}}/>
         <MdToday className={`text-white mt-5 ${menuSelected == 'week' ? 'activeMenu': ''}`} style={{fontSize : '25px'}}/>
         <MdCalendarMonth className={`text-white mt-5 ${menuSelected == 'month' ? 'activeMenu': ''}`} style={{fontSize : '25px'}}/>
         <RiCalendarFill className={`text-white mt-5 ${menuSelected == 'year' ? 'activeMenu': ''}`} style={{fontSize : '25px'}}/>

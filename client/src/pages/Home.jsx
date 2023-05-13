@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router'
 function Home() {
   let navigate = useNavigate();
   const [redirect,setRedirect] = useState(false);
-  const {bgColor,setNotes, newNote, deleteNote, setUsername} = useContext(Context);
+  const {bgColor,setNotes, newNote, deleteNote, setUsername, setProfileImg, updated} = useContext(Context);
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_URL}/session/`,{
       headers: {
@@ -21,6 +21,8 @@ function Home() {
       .then(function (response) {
         setRedirect(true);
         setUsername(response.data.login.login.name + ' ' +response.data.login.login.surname);
+        if(response.data.login.login.photo != null)
+          setProfileImg(response.data.login.login.photo);
       })
       .catch(function (error) {
         navigate('/login');
@@ -31,6 +33,7 @@ function Home() {
           }})
         .then(function(response){
           if(response.data){
+            console.log(response.data);
             setNotes(response.data);
           }
           else{
@@ -39,13 +42,13 @@ function Home() {
         })
         .catch(function(error){
         });
-  },[newNote,deleteNote]);
+  },[newNote,deleteNote, updated]);
   return (
     <>
       {redirect && <div id='home-page' style={{"--bgColor":bgColor}}>
-    <SideMenu/>
-    <SearchBar/>
-    <Notes/>
+      <SideMenu/>
+      <SearchBar/>
+      <Notes/>
     </div>}
     </>
   )

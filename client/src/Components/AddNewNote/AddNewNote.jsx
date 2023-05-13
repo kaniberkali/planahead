@@ -1,4 +1,4 @@
-import { useContext , useEffect} from 'react'
+import { useContext , useEffect, useState} from 'react'
 import {Formik,Field,Form} from 'formik';
 import * as Yup from 'yup';
 import { Context } from '../../Context/context'
@@ -6,6 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router';
+import moment, { months } from 'moment';
+import { Alert } from 'bootstrap';
 
 const getCurrentWeek = () => {
     const now = new Date();
@@ -28,6 +30,7 @@ const getCurrentYear = () => {
 }
 
 function AddNewNote() {
+    const [alert,setAlert] = useState(false);
     const {setNewNote, selected, selectIcon, setIconModal, setSelected, setSelectIcon} = useContext(Context);
     const navigate = useNavigate();
     axios.get(`${process.env.REACT_APP_API_URL}/session/`,{
@@ -40,7 +43,7 @@ function AddNewNote() {
       navigate('/login');
     });
     const NewNote = Yup.object().shape({
-        routine : selected == 'routine' && Yup.string().required('Lütfen bu not için bir saat seçin...'),
+        daily : selected == 'daily' && Yup.string().required('Lütfen bu not için bir saat seçin...'),
         week : selected == 'week' &&  Yup.string().test(
             'is-greater-than-currentWeek',
             'Lütfen geçerli bir tarih girin...',
@@ -94,8 +97,11 @@ function AddNewNote() {
   },[selected]);
   return (
     <div className='w-100 h-100' style={{overflowY : 'auto'}}>
+        {alert && <Alert key='danger' variant='danger'>
+            Note ekleme işlemi gerçekleştirilemedi.    
+        </Alert>}
         <Formik initialValues={{
-            routine: '',
+            daily: '',
             week: '',
             month: '',
             year: '',
@@ -105,13 +111,24 @@ function AddNewNote() {
         validationSchema={NewNote}
         onSubmit={async (values) => {
             setSelectIcon('');
-            setSelected('routine');
+            setSelected('daily');
+            if(selected == 'daily')
+            {
+              values[selected] = moment(values[selected],'HH:mm').format('HH:mm');
+            }
+            else{
+              values[selected] = moment(values[selected]).format('YYYY-MM-DD');
+            }
+            if(selected == 'week' || selected == 'month')
+                values[selected] = convertTime(values[selected], selected);
             const data = {
                 type : selected,
                 date: values[selected],
                 title: values.title,
                 icon_id: selectIcon,
-                content: values.detail}
+                content: values.detail,
+                state: false
+            }
             axios.post(`${process.env.REACT_APP_API_URL}/notes`,data,{
                 headers: {
                   'Authorization': `Basic ${Cookies.get('token')}`
@@ -121,6 +138,8 @@ function AddNewNote() {
                 navigate('/');
             })
             .catch(function (error) {
+                setAlert(true);
+                setTimeout(() => {setAlert(false)},3000);
             });
         }}
         >
@@ -129,7 +148,7 @@ function AddNewNote() {
                 <div className='w-100'>
                     <label style={{fontSize:'14px'}} htmlFor='category'>Kategori</label><br></br>
                     <select className='form-control' name = 'category' onChange={handleChange}>
-                        <option value="routine">Rutin</option>
+                        <option value="daily">Rutin</option>
                         <option value="week">Haftalık</option>
                         <option value="month">Aylık</option>
                         <option value="year">Yıllık</option>
@@ -141,12 +160,12 @@ function AddNewNote() {
                     {selectIcon.length > 0 ? <div className='text-success sm'><small>İkon seçimi yapıldı.</small></div> : null}
                 </div>
                 
-                {selected == 'routine' &&
+                {selected == 'daily' &&
                     <div className='w-100'>
-                        <label style={{fontSize:'14px'}} htmlFor='routine'>Saat</label><br></br>
-                        <Field className = 'form-control' type='time' id='routine' name = 'routine'/>
-                        {errors.routine && touched.routine ? (
-                            <div className='text-danger sm'><small>{errors.routine}</small></div>
+                        <label style={{fontSize:'14px'}} htmlFor='daily'>Saat</label><br></br>
+                        <Field className = 'form-control' type='time' id='daily' name = 'daily'/>
+                        {errors.daily && touched.daily ? (
+                            <div className='text-danger sm'><small>{errors.daily}</small></div>
                         ):null}
                     </div>
                 }
@@ -206,6 +225,29 @@ function AddNewNote() {
         </Formik>
     </div>
   )
+}
+
+const convertTime = (time,type) => {
+    let time_s;
+    let sevenDays;
+    let year;
+    let result;
+    const monthArray = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+    if(type == 'week')
+    {
+        time_s = new Date(time);
+        const copyTime = new Date(time_s.getTime());
+        sevenDays = new Date(copyTime.setDate(copyTime.getDate() + 6));
+        result = `${time_s.toLocaleDateString()} - ${sevenDays.toLocaleDateString()}`
+        return result;
+    }
+    if(type == 'month')
+    {
+        time_s = moment(time_s).format('M');
+        year = time.substring(0,4);
+        result = `${monthArray[parseInt(time_s) - 1]} - ${year}`;
+        return result;
+    }
 }
 
 export default AddNewNote

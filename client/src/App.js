@@ -4,20 +4,18 @@ import Background from './Components/Background/background';
 import Login from './pages/login';
 import Register from './pages/register';
 import Home from './pages/Home';
-import {ContextProvider,Context} from './Context/context';
-import { useContext } from 'react';
+import {ContextProvider} from './Context/context';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 //DevExtremeREACTIVE calendar kullanılacak.
 //Yaklaşan tarihler için bir alan.
 //Planlanmış tarihler olacak.
-//Haftalık componenti yeniden düzenlenecek.
 function App() {
   return (
     <ContextProvider>
       <div className="App">
       <Background/>
-      <BrowserRouter>
+        <BrowserRouter>
         <Routes>
             <Route index path="/" element={<Home/>}/>
             <Route path="/login" element={<Login/>}/>

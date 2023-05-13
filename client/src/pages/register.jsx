@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {Formik,Field,Form} from 'formik';
 import './pages.css'
 import { userRegisterSchema } from '../Validation/validation';
 import { Link, useNavigate} from 'react-router-dom';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import Alert from 'react-bootstrap/Alert';
 
 function Register() {
     let navigate = useNavigate();
+    const [alert,setAlert] = useState(false);
     axios.get(`${process.env.REACT_APP_API_URL}/session/`,{
         headers: {
           'Authorization': `Basic ${Cookies.get('token')}`
@@ -19,6 +21,9 @@ function Register() {
     });
   return (
     <div className='auth-container'>
+        {alert && <Alert className='alert' key = 'danger' variant = 'danger'>
+            Kayıt işlemi yapılamadı
+        </Alert>}
         <h3 className='title'>Expert To-Do</h3>
         <span style={{fontSize:"24px",fontWeight:"400"}}>Register</span>
         <Formik initialValues={{
@@ -35,7 +40,8 @@ function Register() {
                 navigate('/login');
               })
               .catch(function (error) {
-                console.log(error);
+                setAlert(true);
+                setTimeout(() => {setAlert(false)},3000);
               });
         }}
         >

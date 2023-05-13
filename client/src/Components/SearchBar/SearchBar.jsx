@@ -4,7 +4,6 @@ import './searchbar.css'
 function searchBar() {
   return (
     <div id='searchBar'>
-        <input id='search' placeholder='search...'></input>
     </div>
   )
 }

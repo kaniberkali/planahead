@@ -9,11 +9,6 @@ function NotesArea() {
   const arr = [];
   notes.forEach(note => {
     if(menuSelected == note.type){
-      if(note.type == 'routine')
-        note.date = moment(note.date,'HH:mm').format('HH:mm');
-      else{
-        note.date = moment(note.date).format('YYYY-MM-DD');
-      }
       arr.push(note);
     }
   });
@@ -24,7 +19,7 @@ function NotesArea() {
   return (
     <div id='notesArea'>
       {arr && arr.map((note,index) => (
-        <Note noteId={note.id} category = {note.type} time = {note.date} title = {note.title} icon={note.icon_id} detail={note.content} key={index}/>
+        <Note noteState={note.state} noteId={note.id} category = {note.type} time = {note.date} title = {note.title} icon={note.icon_id} detail={note.content} key={index}/>
       ))}
     </div>
   )

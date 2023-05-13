@@ -5,7 +5,7 @@ import { Context } from '../../Context/context'
 import Background from '../Background/background';
 
 function Settings() {
-    const {setStateSettings} = useContext(Context);
+    const {setStateSettings, profileImg, setProfileImg} = useContext(Context);
     const fileInputRef = useRef();
 
     const handleButtonClick = () => {
@@ -16,7 +16,7 @@ function Settings() {
     };
   return (
     <div id='settings'>
-        <div className='profile-img'></div>
+        <div className='profile-img'><img src={profileImg}/></div>
         <label className='btn-settings' onClick={handleButtonClick}>Change Image</label>
         <input ref={fileInputRef} id='file-upload' type='file' accept='.jpg, .jpeg, .png' style={{display : 'none'}} onChange={handleFileInputChange}></input>
         <label style={{marginTop : '40px'}}>Change E-mail</label>

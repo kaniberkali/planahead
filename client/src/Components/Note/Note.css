@@ -11,7 +11,7 @@
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
-.routine{
+.daily{
     color: aliceblue;
     font-size: 30px;
     font-weight: 800;
@@ -35,6 +35,10 @@
     font-size: 20px;
     font-weight: 800;
     letter-spacing: 5px;
+}
+
+.archive{
+    color: rgba(240, 248, 255, 0.614);
 }
 
 .note-icon{
@@ -62,7 +66,7 @@
 
 .delete-note{
     position: absolute;
-    transform: translate(80px,-18px);
+    transform: translate(85px,-18px);
     color: aliceblue;
     cursor: pointer;
     transition: all .3s;

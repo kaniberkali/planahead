@@ -8,12 +8,14 @@ const ContextProvider = ({children}) => {
     const [newNote,setNewNote] = useState(false);
     const [pageNum,setPageNum] = useState(1);
     const [iconModal,setIconModal] = useState(false);
-    const [selected, setSelected] = useState('routine');
-    const [menuSelected, setMenuSelected] = useState('routine');
+    const [selected, setSelected] = useState('daily');
+    const [menuSelected, setMenuSelected] = useState('daily');
     const [selectIcon,setSelectIcon] = useState(''); 
     const [username,setUsername] = useState(null);   
     const [notes,setNotes] = useState([]);
     const [deleteNote,setDeleteNote] = useState(false);
+    const [profileImg,setProfileImg] = useState('');
+    const [updated,setUpdated] = useState(false);
 
     const values = {
         stateSettings,
@@ -27,6 +29,7 @@ const ContextProvider = ({children}) => {
         notes,
         username,
         deleteNote,
+        updated,
         setStateSettings,
         setBgColor,
         setNewNote,
@@ -37,7 +40,8 @@ const ContextProvider = ({children}) => {
         setSelectIcon,
         setNotes,
         setUsername,
-        setDeleteNote
+        setDeleteNote,
+        setUpdated
     };
 
     return<Context.Provider value={values}>{children}</Context.Provider>
