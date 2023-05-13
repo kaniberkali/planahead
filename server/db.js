@@ -2,41 +2,26 @@ const mysql = require("mysql2")
 const config = require('./config.js');
 
 const pool = mysql.createPool(config.db)
-const p2a = async function (query, debug = false) {
-    if (debug)
-        console.log(query)
-    return new Promise((resolve, reject) => {
-        pool.query(query, function (error, results, fields) {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(results);
-            }
+function p2a(sql, debug = false){
+    if(debug) console.log(sql);
+    return new Promise(function(resolve, reject){
+        pool.query(sql, function(error, result){
+            if(error) reject(error);
+            else resolve(result);
         });
     });
 }
 
-const a2s_i = function (table, data) {
-    let result = `INSERT INTO ${table} SET`;
-    Object.keys(data).forEach(function(key) {
-        result += " `" + key + "` = ";
-        if (typeof data[key] === 'number') {
-            result += data[key] + ",";
-        } else {
-            result += "'" + data[key] + "',";
-        }
+function a2s_u(table, data, whereFieldName, whereFieldValue){
+    const values = Object.entries(data).map(function([key, value]){
+        return `${key} = ${typeof value === 'string' ? `'${value}'` : value}`;
     });
-    return result.slice(0, -1);
-};
+    return `UPDATE ${table} SET ${values.join(', ')} WHERE ${whereFieldName} = ${typeof whereFieldValue === 'string' ? `'${whereFieldValue}'` : whereFieldValue}`;
+}
 
-
-const a2s_u = function(table, data, id_field, id_value)
-{
-    let result = `UPDATE ${table} SET`
-    Object.keys(data).forEach(function(key) {
-        result += " `" + key + "` = '" + data[key] + "',"
-    })
-    return result.slice(0, -1) + ` WHERE ${id_field}=${id_value}`
+function a2s_i(table, data){
+    const values = Object.values(data).map(value => typeof value === 'string' ? `'${value}'` : value);
+    return `INSERT INTO ${table} (${Object.keys(data).join(', ')}) VALUES (${values.join(', ')})`;
 }
 
 //Kullanıcılar tablosu yoksa oluşturuyor.
